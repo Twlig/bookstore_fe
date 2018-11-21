@@ -3,9 +3,14 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import './assets/css/bootstrap.min.css'
+import './assets/css/font-awesome.min.css'
+import './assets/css/ie9.css'
+import './assets/css/main.css'
+import axios from 'axios'
 
 Vue.config.productionTip = false
-
+Vue.prototype.axios = axios;
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
