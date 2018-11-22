@@ -2,7 +2,7 @@
   <div class="landing">
     <!-- Header -->
     <header id="header">
-      <h1><a href="main.html">BOOKSTORE</a></h1>
+      <h1><a @click="toUser()">BOOKSTORE</a></h1>
     </header>
 
     <!-- Main -->
@@ -28,12 +28,12 @@
           </div>
           <div class="3u 6u(small) 12u$(xsmall)">
             <ul class="actions vertical">
-              <li><a href="chart.html" class="button special small fit">加入购物车</a></li>
+              <li><a @click="toChart()" class="button special small fit">加入购物车</a></li>
             </ul>
           </div>
           <div class="3u$ 6u$(small) 12u$(xsmall)">
             <ul class="actions vertical small">
-              <li><a href="main.html" class="button alt small fit">返回</a></li>
+              <li><a @click="toUser()" class="button alt small fit">返回首页</a></li>
             </ul>
           </div>
 
@@ -53,3 +53,21 @@
     </footer>
   </div>
 </template>
+<script>
+  export default {
+    name: 'Information',
+    data() {
+      return {
+
+      }
+    },
+    methods: {
+      toChart() {
+        this.$router.push('/chart')
+      },
+      toUser() {
+        this.$router.push('/')
+      }
+    }
+  }
+</script>

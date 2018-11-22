@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import  Login from '@/components/Login'
 import Register from '@/components/Register'
-import User from '@/components/User'
 import Main from '@/components/Main'
 import  Chart from '@/components/Chart'
 import List from '@/components/List'
@@ -13,6 +12,11 @@ export default new Router({
   routes: [
     {
       path: '/',
+      name: 'Main',
+      component: Main
+    },
+    {
+      path: '/login',
       name: 'Login',
       component: Login
     },
@@ -20,16 +24,6 @@ export default new Router({
       path: '/register',
       name: 'Register',
       component: Register
-    },
-    {
-      path: '/user',
-      name: 'User',
-      component: User
-    },
-    {
-      path: '/main',
-      name: 'Main',
-      component: Main
     },
     {
       path: '/chart',

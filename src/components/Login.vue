@@ -1,7 +1,7 @@
 <template>
   <div class="landing">
     <header id="header" class="alt">
-      <a href="user.html">首页</a>
+      <a @click="toMain()">首页</a>
     </header>
     <section id="four" class="wrapper style2 special">
       <div class="inner">
@@ -9,28 +9,28 @@
           <h2>登录</h2>
         </header>
         <br>
-        <form action="main.html" method="POST">
-          <div class="container 25%">
+        <form>
+          <div class="container 25% formarea">
             <div class="row uniform 100%">
               <div class="12u 12u$(xsmall)">
-                <input class="login" name="name" placeholder="Set Name" type="text" />
+                <input v-model="userid" class="login" name="name" placeholder="Set Name" type="text" />
               </div>
             </div>
           </div>
           <div class="container 25% formarea">
             <div class="row uniform 100%">
               <div class="12u 12u$(xsmall)">
-                <input class="password" name="password" placeholder="Set Password" type="password" />
+                <input v-model="userpassword" class="password" name="password" placeholder="Set Password" type="password" />
               </div>
             </div>
           </div>
           <ul class="actions">
-            <li><input type="submit" class="special" value="提交" /></li>
-            <li><input type="reset" class="alt" value="重置" /></li>
+            <li><input @click="login()" type="submit" class="special" value="提交" /></li>
+            <li><input @click="reset()" type="reset" class="alt" value="重置" /></li>
           </ul>
         </form>
         <div >
-          <a href="register.html">没有账号，现在注册</a>
+          <a @click="toRegister()">没有账号，现在注册</a>
         </div>
       </div>
       <br>
@@ -49,14 +49,25 @@
 </template>
 <script>
   export default {
+    name:'Login',
     data() {
       return {
-
+        userid: '',
+        userpassword: ''
       }
     },
     methods: {
       getMess() {
         this.axios.get()
+      },
+      toMain() {
+        this.$router.push('/')
+      },
+      toRegister() {
+        this.$router.push('/register')
+      },
+      login() {
+        //this.$router.push('/')
       }
     },
     created() {
@@ -73,5 +84,9 @@
   .password {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
+  }
+  .formarea {
+    margin-top: 10px;
+    width: 36%;
   }
 </style>
