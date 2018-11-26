@@ -7,7 +7,7 @@ import './assets/css/bootstrap.min.css'
 import './assets/css/font-awesome.min.css'
 import './assets/css/ie9.css'
 import './assets/css/main.css'
-import axios from 'axios'
+import axios from './axios.js'
 
 Vue.config.productionTip = false
 Vue.prototype.axios = axios;

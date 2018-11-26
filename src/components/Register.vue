@@ -33,8 +33,8 @@
             </div>
           </div>
           <ul class="actions formarea2">
-            <li @click="submitMess()" class="input"><input type="submit" class="special" value="提交" /></li>
-            <li class="input"><input type="reset" class="alt" value="重置" /></li>
+            <li @click="submitMess()" class="input"><input style="border: none;outline: none" type="submit" class="special" value="提交" /></li>
+            <li @click="reset()" class="input"><input style="border: none;outline: none" type="reset" class="alt" value="重置" /></li>
           </ul>
         </form>
       </div>
@@ -57,7 +57,7 @@
     name: 'Register',
     data() {
       return {
-        baseUrl: '',
+        //baseUrl: "120.79.211.126:8080/bookstore",
         userid: '',
         userpassword: ''
       }
@@ -67,17 +67,21 @@
         this.$router.push('/')
       },
       submitMess() {
-        data = {
+        let data = {
           user_num: this.userid,
           user_pwd: this.userpassword
         }
         this.axios.post('/api/register',data)
           .then(function (res) {
-            
+            alert(res.data.data)
           })
           .catch(function (err) {
             
           })
+      },
+      reset() {
+        this.userid = ''
+        this.userpassword = ''
       }
     }
   }

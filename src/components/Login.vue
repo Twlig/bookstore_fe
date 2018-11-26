@@ -57,17 +57,33 @@
       }
     },
     methods: {
-      getMess() {
-        this.axios.get()
-      },
       toMain() {
-        this.$router.push('/')
+
       },
       toRegister() {
         this.$router.push('/register')
       },
       login() {
-        //this.$router.push('/')
+        let data = {
+          user_num: this.userid,
+          user_pwd: this.userpassword
+        }
+        this.axios.post('/api/login',data)
+          .then(function (res) {
+            if(res.data.status == 1) {
+              localStorage.setItem("token",res.data.data.token)
+              this.$router.push('/main')
+            }
+            else {
+              alert(res.data.message)
+            }
+          })
+          .catch(function (err) {
+          })
+      },
+      reset() {
+        this.userid = ''
+        this.userpassword = ''
       }
     },
     created() {

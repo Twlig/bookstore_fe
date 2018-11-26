@@ -1,7 +1,7 @@
 <template>
   <div class="landing">
     <header id="header" class="alt">
-      <h1><a href="#nav">书籍目录</a></h1>
+      <h1><a @click="getMessage()" >书籍目录</a></h1>
       <div v-if="!isLogin">
         <a @click="toLogin()">登录</a>
         <a @click="toRegister()">注册</a>
@@ -14,17 +14,11 @@
     </header>
 
     <!-- 导航 -->
-    <nav id="nav">
+    <nav id="nav" :class="[isVisible ?  'visible' : '']">
       <ul class="links">
-        <li><a href="#">小说</a></li>
-        <li><a href="#">文学</a></li>
-        <li><a href="#">传记</a></li>
-        <li><a href="#">艺术</a></li>
-        <li><a href="#">少儿</a></li>
-        <li><a href="#">经济</a></li>
-        <li><a href="#">管理</a></li>
-        <li><a href="#">生活</a></li>
+        <li v-for="item in category"><a href="#">{{item.name}}</a></li>
       </ul>
+      <a class="close" @click="isVisible = !isVisible" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></a>
     </nav>
 
     <!-- bookstore -->
@@ -79,10 +73,24 @@
     name: "Main",
     data() {
       return {
-        isLogin: true
+        isLogin: true,
+        isVisible: false,
+        category: []
       }
     },
     methods: {
+      getMessage() {
+        this.isVisible = !this.isVisible
+        this.axios.get("/api/getCategory")
+          .then((res) => {
+            if(res.data.status == 1) {
+              this.category = res.data.data
+            }
+            else {
+              alert(res.data.message)
+            }
+          })
+      },
       toLogin() {
         this.$router.push('/login')
       },
@@ -101,6 +109,9 @@
       deleteLogin() {
         this.isLogin = false
       }
+    },
+    created() {
+     // this.getMessage()
     }
   }
 </script>
