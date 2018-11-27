@@ -58,12 +58,31 @@
     name: 'Information',
     data() {
       return {
-
+        book_id: 10,
+        book_count: 2
       }
     },
     methods: {
+      getMessage() {
+        // this.$route.query.id
+      },
       toChart() {
-        this.$router.push('/chart')
+        let _this = this
+        let data = {
+          book_id: this.book_id,
+          book_count: this.book_count
+        }
+        this.axios.post("/api/addBookWithToken",data)
+          .then(res => {
+            console.log(res.data)
+            if(res.data.status == 1) {
+              alert("添加成功")
+              _this.$router.push('/chart')
+            }
+            else {
+              alert("添加失败")
+            }
+          })
       },
       toUser() {
         this.$router.push('/')

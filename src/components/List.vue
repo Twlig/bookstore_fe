@@ -17,28 +17,17 @@
               <th>状态</th>
             </tr>
             </thead>
-            <tbody>
-            <tr>
-              <td><img src="images/book.jpg" alt="" width="140px" height="150px"/></td>
-              <td>  作者：余华 出版社：21世纪出版社</td>
-              <td>29.99</td>
-              <th>1</th>
-              <td>已付款</td>
+            <tbody v-for="item in bookList">
+            <tr v-for="book in item.books">
+              <td><img :src="book.book_smimg" alt="" width="140px" height="150px"/></td>
+              <td>  作者：{{book.book_author}} 出版社：{{book.book_publishing}}</td>
+              <td>价格</td>
+              <th>{{book.book_count}}</th>
+              <td v-if="item.is_finsh == '1'">已付款</td>
+              <td v-if="item.is_finsh == '0'">待收货</td>
             </tr>
-            <tr>
-              <td><img src="images/book.jpg" alt="" width="140px" height="150px"/></td>
-              <td>Vis ac commodo adipiscing arcu aliquet.</td>
-              <td>19.99</td>
-              <th>1</th>
-              <td>待发货</td>
-            </tr>
-            <tr>
-              <td><img src="images/book.jpg" alt="" width="140px" height="150px"/></td>
-              <td> Morbi faucibus arcu accumsan lorem.</td>
-              <td>29.99</td>
-              <th>1</th>
-              <td>已付款</td>
-            </tr>
+            <hr>
+            <tr><th aria-colspan="5" style="text-align: right">总价：{{item.total_price}}</th></tr>
             </tbody>
 
           </table>
@@ -83,10 +72,21 @@
     name: 'List',
     data() {
       return {
-
+        bookList:[]
       }
     },
     methods: {
+      getMessage() {
+        this.axios.get("/api/getUserOrders")
+          .then(res => {
+            if(res.data.status == 0) {
+              this.bookList = res.data.data
+            }
+            else {
+              alert("请求失败")
+            }
+          })
+      },
       toUser() {
         this.$router.push('/')
       },

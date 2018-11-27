@@ -25,8 +25,8 @@
             </div>
           </div>
           <ul class="actions">
-            <li><input @click="login()" type="submit" class="special" value="提交" /></li>
-            <li><input @click="reset()" type="reset" class="alt" value="重置" /></li>
+            <li><input @click="login()" type="button" class="special" value="提交" /></li>
+            <li><input @click="reset()" type="button" class="alt" value="重置" /></li>
           </ul>
         </form>
         <div >
@@ -68,11 +68,12 @@
           user_num: this.userid,
           user_pwd: this.userpassword
         }
+        let _this = this
         this.axios.post('/api/login',data)
           .then(function (res) {
             if(res.data.status == 1) {
               localStorage.setItem("token",res.data.data.token)
-              this.$router.push('/main')
+              _this.$router.push('/')
             }
             else {
               alert(res.data.message)

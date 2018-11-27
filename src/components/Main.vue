@@ -1,7 +1,7 @@
 <template>
   <div class="landing">
     <header id="header" class="alt">
-      <h1><a @click="getMessage()" >书籍目录</a></h1>
+      <h1><a @click="getCategory()" >书籍目录</a></h1>
       <div v-if="!isLogin">
         <a @click="toLogin()">登录</a>
         <a @click="toRegister()">注册</a>
@@ -73,13 +73,25 @@
     name: "Main",
     data() {
       return {
-        isLogin: true,
+        isLogin: false,
         isVisible: false,
         category: []
       }
     },
     methods: {
       getMessage() {
+        let _this = this
+        this.axios.get("/api/getUserOrders")
+          .then((res) => {
+            if(res.data.status == 1) {
+              _this.isLogin = true
+            }
+            else {
+              _this.isLogin = false
+            }
+          })
+      },
+      getCategory() {
         this.isVisible = !this.isVisible
         this.axios.get("/api/getCategory")
           .then((res) => {
@@ -97,8 +109,9 @@
       toRegister() {
         this.$router.push('/register')
       },
-      toInformation() {
-        this.$router.push('/information')
+      toInformation(index) {
+
+        this.$router.push('/information?id=123123')
       },
       toChart() {
         this.$router.push('/chart')
@@ -107,11 +120,12 @@
         this.$router.push('/list')
       },
       deleteLogin() {
+        localStorage.removeItem('token')
         this.isLogin = false
       }
     },
     created() {
-     // this.getMessage()
+      this.getMessage()
     }
   }
 </script>

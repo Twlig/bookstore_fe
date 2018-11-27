@@ -18,26 +18,12 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-              <td><img src="images/book.jpg" alt="" width="140px" height="150px"/></td>
-              <td>  作者：余华 出版社：21世纪出版社</td>
-              <td>29.99</td>
-              <th class="font"><img src="images/reduce.png" alt="" width="20px" height="20px"/>   2   <img src="images/add.png" alt="" width="20px" height="20px"/></th>
-              <td><a href="#" class="button alt small">删除</a></td>
-            </tr>
-            <tr>
-              <td><img src="images/book.jpg" alt="" width="140px" height="150px"/></td>
-              <td>Vis ac commodo adipiscing arcu aliquet.</td>
-              <td>19.99</td>
-              <th class="font"><img src="images/reduce.png" alt="" width="20px" height="20px"/>   1   <img src="images/add.png" alt="" width="20px" height="20px"/></th>
-              <td><a href="#" class="button alt small">删除</a></td>
-            </tr>
-            <tr>
-              <td><img src="images/book.jpg" alt="" width="140px" height="150px"/></td>
-              <td> Morbi faucibus arcu accumsan lorem.</td>
-              <td>29.99</td>
-              <th class="font"><img src="images/reduce.png" alt="" width="20px" height="20px"/>   1   <img src="images/add.png" alt="" width="20px" height="20px"/></th>
-              <td><a href="#" class="button alt small">删除</a></td>
+            <tr v-for="(item,index) in bookList">
+              <td><img :src="'item.book_smimg'" alt="" width="140px" height="150px"/></td>
+              <td>  作者：{{item.book_author}} 出版社：{{item.book_publishing}}</td>
+              <td>{{item.book_price}}</td>
+              <th class="font"><img @click="reduce(index)" src="../assets/images/reduce.png" alt="" width="20px" height="20px"/>{{item.book_count}}<img @click="add(index)" src="../assets/images/add.png" alt="" width="20px" height="20px"/></th>
+              <td><a @click="deleteL(index)" href="#" class="button alt small">删除</a></td>
             </tr>
             </tbody>
 
@@ -82,16 +68,40 @@
     name: 'Chart',
     data() {
       return {
-
+        bookList:[]
       }
     },
     methods: {
+      getMessage() {
+        let _this = this
+        this.axios.get("/api/getShopCarWithToken")
+          .then(res => {
+            if(res.data.status == 1) {
+              _this.bookList = res.data.data
+            }
+            else {
+              alert("请求失败")
+            }
+          })
+      },
       toUser() {
         this.$router.push('/')
       },
       toList() {
         this.$router.push('/list')
+      },
+      deleteL(index) {
+
+      },
+      reduce(index) {
+
+      },
+      add(index) {
+
       }
+    },
+    created() {
+      this.getMessage()
     }
   }
 </script>
