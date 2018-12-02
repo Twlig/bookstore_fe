@@ -57,7 +57,7 @@
     name: 'Register',
     data() {
       return {
-        //baseUrl: "120.79.211.126:8080/bookstore",
+        baseUrl: "http://120.79.211.126:8080/bookstore",
         userid: '',
         userpassword: ''
       }
@@ -71,7 +71,7 @@
           user_num: this.userid,
           user_pwd: this.userpassword
         }
-        this.axios.post('/api/register',data)
+        this.axios.post( this.baseUrl+'/api/register',data)
           .then(function (res) {
             alert(res.data.data)
           })

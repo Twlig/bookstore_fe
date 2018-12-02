@@ -25,8 +25,8 @@
             </div>
           </div>
           <ul class="actions">
-            <li><input @click="login()" type="button" class="special" value="提交" /></li>
-            <li><input @click="reset()" type="button" class="alt" value="重置" /></li>
+            <li><input style="outline: none" @click="login()" type="button" class="special" value="提交" /></li>
+            <li><input style="outline: none" @click="reset()" type="button" class="alt" value="重置" /></li>
           </ul>
         </form>
         <div >
@@ -52,13 +52,14 @@
     name:'Login',
     data() {
       return {
+        baseUrl: "http://120.79.211.126:8080/bookstore",
         userid: '',
         userpassword: ''
       }
     },
     methods: {
       toMain() {
-
+        this.$router.push('/')
       },
       toRegister() {
         this.$router.push('/register')
@@ -69,11 +70,17 @@
           user_pwd: this.userpassword
         }
         let _this = this
-        this.axios.post('/api/login',data)
+        this.axios.post(this.baseUrl + '/api/login',data)
           .then(function (res) {
             if(res.data.status == 1) {
+              localStorage.setItem("userName",_this.userid)
               localStorage.setItem("token",res.data.data.token)
-              _this.$router.push('/')
+              if(res.data.data.user_type == 0) {
+                _this.$router.push('/')
+              }
+              if(res.data.data.user_type == 1) {
+                _this.$router.push('/admin')
+              }
             }
             else {
               alert(res.data.message)

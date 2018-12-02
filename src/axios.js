@@ -1,7 +1,6 @@
 import axios from 'axios'
 
 const instance = axios.create({
-  baseURL: 'http://120.79.211.126:8080/bookstore',
   timeout: 2000
 });
 

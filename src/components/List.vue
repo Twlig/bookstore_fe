@@ -7,7 +7,7 @@
       <div class="container">
 
         <div class="table-wrapper">
-          <table>
+          <table style="border-collapse: collapse;">
             <thead>
             <tr>
               <th>书名</th>
@@ -18,18 +18,19 @@
             </tr>
             </thead>
             <tbody v-for="item in bookList">
-            <tr v-for="book in item.books">
-              <td><img :src="book.book_smimg" alt="" width="140px" height="150px"/></td>
+            <tr v-for="book in item">
+              <td><img :src="book.book_smimg" alt="" width="140px" height="150px"/><div>{{book.book_name}}</div></td>
               <td>  作者：{{book.book_author}} 出版社：{{book.book_publishing}}</td>
-              <td>价格</td>
-              <th>{{book.book_count}}</th>
-              <td v-if="item.is_finsh == '1'">已付款</td>
-              <td v-if="item.is_finsh == '0'">待收货</td>
+              <td>{{book.book_price}}</td>
+              <th>{{book.book_num}}</th>
+              <td v-if="book.is_finsh == '1'">已付款</td>
+              <td v-if="book.is_finsh == '0'">待收货</td>
             </tr>
-            <hr>
-            <tr><th aria-colspan="5" style="text-align: right">总价：{{item.total_price}}</th></tr>
+            <!--<div style="width: %;height: 2px;background-color: #0b2e13"></div>-->
+            <!--<div style="width: 100%;height: 2px;background-color: #0b2e13"></div>-->
+            <!--<tr><th aria-colspan="5" style="text-align: right">总价：{{}}</th></tr>-->
+            <div style="width: 100%;height: 2px;background-color: #1b1e21"></div>
             </tbody>
-
           </table>
         </div>
         <div class="row">
@@ -72,15 +73,18 @@
     name: 'List',
     data() {
       return {
-        bookList:[]
+        bookList:[],
+        baseUrl: "http://120.79.211.126:8080/bookstore",
+        baseUrl2: "http://119.29.150.121:8080/bookstore"
       }
     },
     methods: {
       getMessage() {
-        this.axios.get("/api/getUserOrders")
+        this.axios.get(this.baseUrl2 + "/api/getSelfOrders?user_name=" + localStorage.getItem("userName"))
           .then(res => {
-            if(res.data.status == 0) {
+            if(res.data.status == 1) {
               this.bookList = res.data.data
+              console.log(this.bookList)
             }
             else {
               alert("请求失败")
@@ -93,6 +97,9 @@
       toChart() {
         this.$router.push('/chart')
       }
+    },
+    created() {
+      this.getMessage()
     }
   }
 </script>

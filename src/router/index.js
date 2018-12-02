@@ -6,6 +6,7 @@ import Main from '@/components/Main'
 import  Chart from '@/components/Chart'
 import List from '@/components/List'
 import Information from '@/components/Information'
+import Admin from '@/components/Admin'
 Vue.use(Router)
 
 export default new Router({
@@ -39,6 +40,11 @@ export default new Router({
       path: '/information',
       name: 'Information',
       component: Information
+    },
+    {
+      path: '/admin',
+      name: 'Admin',
+      component: Admin
     }
   ]
 })

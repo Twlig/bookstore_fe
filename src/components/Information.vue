@@ -10,13 +10,12 @@
       <div class="container">
 
         <header class="major special">
-          <h2>《书名》</h2>
-          <p>作者：张三</p>
+          <h2>《{{book.name}}》</h2>
+          <p>作者：{{book.author}}</p>
         </header>
-        <p><span class="image left"><img src="images/pic06.jpg" alt="" /></span>
-          Vis accumsan feugiat adipiscing nisl amet adipiscing accumsan blandit accumsan sapien blandit ac amet faucibus aliquet placerat commodo. Interdum ante aliquet commodo accumsan vis phasellus adipiscing. Ornare a in lacinia. Vestibulum accumsan ac metus massa tempor. Accumsan in lacinia ornare massa amet. Ac interdum ac non praesent. Cubilia lacinia interdum massa faucibus blandit nullam. Accumsan phasellus nunc integer. Accumsan euismod nunc adipiscing lacinia erat ut sit. Arcu amet. Id massa aliquet arcu accumsan lorem amet accumsan.</p>
-        <p>Amet nibh adipiscing adipiscing. Commodo ante vis rat lorem turpis at. Aliquet lorem porttitor interduac phasellus. In amet magna non interdum volutpat porttitor metus a ante ac neque. Nisi turpis. Commodo col. Interdum adipiscing mollis ut aliquam id ante adipiscing commodo integer arcu amet Ac interdum ac non praesent. Cubilia lacinia interdum massa faucibus blandit nullam. Accumsan phasellus nunc integer. Accumsan euismod nunc adipiscing lacinia erat ut sit. Arcu amet. Id massa aliquet arcu accumsan lorem amet accumsan commodo odio cubilia ac eu interdum placerat placerat arcu commodo lobortis adipiscing semper ornare pellentesque.</p>
-
+        <span style="float: left" class="image left"><img :src=book.smimg alt="" /></span>
+        <p style="width: 900px;text-align: left">{{book.describe}}</p>
+        <div style="clear: both;"></div>
         <div class="row">
           <div class="3u 6u(small) 12u$(xsmall)">
             <ul class="actions vertical">
@@ -58,35 +57,67 @@
     name: 'Information',
     data() {
       return {
-        book_id: 10,
-        book_count: 2
+        baseUrl: "http://120.79.211.126:8080/bookstore",
+        baseUrl2:"http://119.29.150.121:8080/bookstore",
+        book_id: '',
+        book_count: '',
+        book: '',
+        //isLogin: false
       }
     },
     methods: {
       getMessage() {
-        // this.$route.query.id
+        this.axios(this.baseUrl2 + "/api/getBookInformation?book_id=" + this.$route.query.id)
+          .then(res => {
+            this.book = res.data.data
+          })
       },
       toChart() {
         let _this = this
-        let data = {
-          book_id: this.book_id,
-          book_count: this.book_count
-        }
-        this.axios.post("/api/addBookWithToken",data)
-          .then(res => {
-            console.log(res.data)
+        this.axios.get(this.baseUrl + "/api/getShopCarWithToken")
+          .then((res) => {
             if(res.data.status == 1) {
-              alert("添加成功")
-              _this.$router.push('/chart')
+              //this.isLogin = true
+              let data = {
+                book_id: this.book.id.toString(),
+                book_count: "1"
+              }
+              this.axios.post(this.baseUrl + "/api/addBookWithToken",data)
+                .then(res => {
+                  console.log(res.data)
+                  if(res.data.status == 1) {
+                    alert("添加成功")
+                    _this.$router.push('/chart')
+                  }
+                  else {
+                    alert("添加失败")
+                  }
+                })
             }
             else {
-              alert("添加失败")
+              //alert("没有登录，稍后跳转登录页面")
+              this.axios.get(this.baseUrl2 + "/api/addToShopCar?book_id=" + this.book.id.toString())
+                .then(res => {
+                  if(res.data.status == 1) {
+                    alert("添加成功")
+                    let books = JSON.parse(sessionStorage.getItem('books'))
+                    let bookItem =
+                    _this.$router.push('/chart')
+                  }
+                  else {
+                    alert("添加失败")
+                  }
+                })
+            //  _this.$router.push('/login')
             }
           })
       },
       toUser() {
         this.$router.push('/')
       }
+    },
+    created() {
+      this.getMessage()
     }
   }
 </script>
