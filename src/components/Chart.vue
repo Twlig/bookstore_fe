@@ -127,16 +127,16 @@
         for(let i = 0; i < this.checkBook.length;i++) {
           data.push({
             book_id: this.bookList[this.checkBook[i]].book_id.toString(),
-            book_count: this.bookList[this.checkBook[i]].book_count.toString()
+            // book_count: this.bookList[this.checkBook[i]].book_count.toString()
           })
         }
-        // let data1 = {
-        //   isLog: 1,
-        //   user_name: "6100116006",
-        //   book_idArr: data
-        // }
+         let data1 = {
+          isLog: 1,
+          user_name: "6100116006",
+          book_idArr: data
+        }
         let _this = this
-        this.axios.post(this.baseUrl + "/api/submitOrder",data)
+        this.axios.post(this.baseUrl2 + "/api/submitOrders",data1)
           .then(res => {
             console.log(res.data)
             if(res.data.status == 1) {

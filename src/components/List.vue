@@ -18,6 +18,7 @@
             </tr>
             </thead>
             <tbody v-for="item in bookList">
+            <div style="width: 100%;height: 2px;background-color: #1b1e21"></div>
             <tr v-for="book in item">
               <td><img :src="book.book_smimg" alt="" width="140px" height="150px"/><div>{{book.book_name}}</div></td>
               <td>  作者：{{book.book_author}} 出版社：{{book.book_publishing}}</td>
@@ -29,7 +30,6 @@
             <!--<div style="width: %;height: 2px;background-color: #0b2e13"></div>-->
             <!--<div style="width: 100%;height: 2px;background-color: #0b2e13"></div>-->
             <!--<tr><th aria-colspan="5" style="text-align: right">总价：{{}}</th></tr>-->
-            <div style="width: 100%;height: 2px;background-color: #1b1e21"></div>
             </tbody>
           </table>
         </div>

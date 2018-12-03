@@ -1,9 +1,8 @@
 <template>
   <div>
     <header style="position: relative" id="header" class="skel-layers-fixed">
-      <h1><a>首页</a></h1>
+      <h1><a @click="visible()">Menu</a></h1>
       <span class="title">{{title}}</span>
-      <a @click="visible()">Menu</a>
     </header>
     <nav id="nav" :class="[isVisible ?  'visible' : '']">
       <ul style="padding-top: 30px" class="links">
