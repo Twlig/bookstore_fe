@@ -3,10 +3,10 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import './assets/css/bootstrap.min.css'
-import './assets/css/font-awesome.min.css'
-import './assets/css/ie9.css'
-import './assets/css/main.css'
+import '../static/css/bootstrap.min.css'
+import '../static/css/font-awesome.min.css'
+import '../static/css/ie9.css'
+import '../static/css/main.css'
 import axios from './axios.js'
 
 Vue.config.productionTip = false

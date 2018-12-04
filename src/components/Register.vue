@@ -89,6 +89,7 @@
             .then(function (res) {
               _this.message = res.data.message
               _this.display()
+              _this.$router.push("/login")
             })
             .catch(function (err) {
               _this.message = "请求失败"

@@ -27,7 +27,7 @@
           </div>
           <div class="3u 6u(small) 12u$(xsmall)">
             <ul class="actions vertical">
-              <li><a @click="toChart()" class="button special small fit">加入购物车</a></li>
+              <li><a @click="toChart()" class="button special small fit"><i class="fa fa-shopping-cart"></i> &nbsp;加入购物车(￥{{book.price}})</a></li>
             </ul>
           </div>
           <div class="3u$ 6u$(small) 12u$(xsmall)">

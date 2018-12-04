@@ -29,7 +29,7 @@
                 <div>{{item.book_name}}</div>
               </td>
               <td>  作者：{{item.book_author}} 出版社：{{item.book_publishing}}</td>
-              <td>{{item.book_price}}</td>
+              <td>{{(item.book_price * item.book_count).toFixed(2)}}</td>
               <th class="font" style="font-size: 20px"><img @click="reduce(index)" src="../assets/images/reduce.png" alt="" width="20px" height="20px"/>&nbsp;{{item.book_count}}&nbsp;<img @click="add(index)" src="../assets/images/add.png" alt="" width="20px" height="20px"/></th>
               <td><a @click="deleteL(index)" href="#" class="button alt small">删除</a></td>
             </tr>
@@ -50,7 +50,7 @@
             <ul class="actions vertical">
             </ul>
           </div>
-          <div class="3u$ 6u$(small) 12u$(xsmall)">
+          <div v-if="isLogin" class="3u$ 6u$(small) 12u$(xsmall)">
             <ul class="actions vertical small">
               <li><a @click="toList()" class="button special small fit">提交订单</a></li>
             </ul>
@@ -120,17 +120,21 @@
           })
       },
       getStatus() {
+        let _this = this
         this.axios.get(this.baseUrl + "/api/getShopCarWithToken")
           .then(res => {
            // console.log("status:" + res.data.status)
             if(res.data.status == 1) {
-              this.isLogin = true
-              this.getMessage()
+              _this.isLogin = true
+              _this.getMessage()
             }
             else {
               // this.getMessageWithoutToken()
-              this.message = "未登录，无法查看"
-              this.display()
+              _this.message = "未登录，无法查看,正在跳转登录页面..."
+              _this.display()
+              setTimeout(function () {
+                _this.$router.push("/login")
+              },2000)
             }
           })
       },
@@ -147,24 +151,30 @@
         }
          let data1 = {
           isLog: 1,
-          user_name: "6100116006",
+          user_name: localStorage.getItem("userName").toString(),
           book_idArr: data
         }
-        let _this = this
-        this.axios.post(this.baseUrl2 + "/api/submitOrders",data1)
-          .then(res => {
-            if(res.data.status == 1) {
-              _this.message = "提交成功，即将跳转到登录页面"
-              this.display()
-              setTimeout(function () {
-                _this.$router.push('/list')
-              },2000)
-            }
-            else {
-              _this.message = res.data.message
-              _this.display()
-            }
-          })
+        if(data.length <= 0) {
+          this.message = "请勾选要提交的订单"
+          this.display()
+        }
+        else {
+          let _this = this
+          this.axios.post(this.baseUrl2 + "/api/submitOrders",data1)
+            .then(res => {
+              if(res.data.status == 1) {
+                _this.message = "提交成功，即将跳转到登录页面"
+                this.display()
+                setTimeout(function () {
+                  _this.$router.push('/list')
+                },2000)
+              }
+              else {
+                _this.message = res.data.message
+                _this.display()
+              }
+            })
+        }
       },
       deleteL(index) {
         let data = {

@@ -24,7 +24,7 @@
             <tr v-for="book in item">
               <td><img :src="book.book_smimg" alt="" width="140px" height="150px"/><div>{{book.book_name}}</div></td>
               <td>  作者：{{book.book_author}} 出版社：{{book.book_publishing}}</td>
-              <td>{{book.book_price}}</td>
+              <td>{{book.book_price.toFixed(2)}}</td>
               <td>{{book.book_num}}</td>
               <td v-if="book.is_finsh == '0'">已付款</td>
               <td v-if="book.is_finsh == '1'">已发货</td>

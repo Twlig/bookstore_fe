@@ -29,7 +29,7 @@
 		&.style3 {
 			@include color(accent2);
 			background-attachment: fixed;
-			background-image: url('../../css/images/overlay.png'), url('../../pic11.jpg');
+			background-image: url('../../../../static/css/images/overlay.png'), url('../../pic11.jpg');
 			background-size: cover;
 		}
 
