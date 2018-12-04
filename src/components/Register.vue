@@ -33,7 +33,7 @@
             </div>
           </div>
           <ul class="actions formarea2">
-            <li @click="submitMess()" class="input"><input style="border: none;outline: none" type="submit" class="special" value="提交" /></li>
+            <li @click="submitMess()" class="input"><input style="border: none;outline: none" type="reset" class="special" value="提交" /></li>
             <li @click="reset()" class="input"><input style="border: none;outline: none" type="reset" class="alt" value="重置" /></li>
           </ul>
         </form>
@@ -50,6 +50,9 @@
         </ul>
       </div>
     </footer>
+    <div id="alert">{{message}}
+      <img @click="displayNone()" src="../assets/images/close.png"/>
+    </div>
   </div>
 </template>
 <script>
@@ -59,7 +62,8 @@
       return {
         baseUrl: "http://120.79.211.126:8080/bookstore",
         userid: '',
-        userpassword: ''
+        userpassword: '',
+        message: ''
       }
     },
     methods: {
@@ -71,17 +75,39 @@
           user_num: this.userid,
           user_pwd: this.userpassword
         }
-        this.axios.post( this.baseUrl+'/api/register',data)
-          .then(function (res) {
-            alert(res.data.data)
-          })
-          .catch(function (err) {
-            
-          })
+        let _this = this
+        if(this.userid == '') {
+          _this.message = "用户名不能为空"
+          this.display()
+        }
+        else if(this.userpassword == '') {
+          this.message = "密码不能为空"
+          this.display()
+        }
+        else {
+          this.axios.post( this.baseUrl+'/api/register',data)
+            .then(function (res) {
+              _this.message = res.data.message
+              _this.display()
+            })
+            .catch(function (err) {
+              _this.message = "请求失败"
+              _this.display()
+            })
+        }
       },
       reset() {
         this.userid = ''
         this.userpassword = ''
+      },
+      displayNone() {
+        document.getElementById("alert").style.top = "-50px"
+      },
+      display() {
+        document.getElementById("alert").style.top = "10px"
+        setTimeout(function () {
+          document.getElementById("alert").style.top = "-50px"
+        },2000)
       }
     }
   }
@@ -116,5 +142,32 @@
   }
   .formarea2 .input {
     width: 18%;
+  }
+   #alert {
+     line-height: 30px;
+     padding-left: 80px;
+     padding-right: 80px;
+     position: fixed;
+     left: 50%;
+     margin-left: -150px;
+     top: -50px;
+     text-align: center;
+     background-color: rgb(255,255,255);
+     border-radius: 3px;
+     box-shadow: 10px 10px 5px rgba(0,0,0,0.5);
+     color: #000;
+     font-size: 15px;
+     z-index: 10002;
+     transition: all 0.5s ease-in-out;
+   }
+  #alert img {
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+  }
+  .aa {
+    background-color: #51BAA4;
   }
 </style>

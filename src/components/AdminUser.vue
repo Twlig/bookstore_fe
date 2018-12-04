@@ -42,6 +42,9 @@
     <hr>
     <br>
     <br>
+    <div id="alert">{{message}}
+      <img @click="displayNone()" src="../assets/images/close.png"/>
+    </div>
   </div>
 </template>
 <script>
@@ -51,7 +54,8 @@
         baseUrl: "http://120.79.211.126:8080/bookstore",
         user_name: '',
         userInfo: [],
-        user: ''
+        user: '',
+        message: ""
       }
     },
     methods: {
@@ -63,7 +67,8 @@
                 this.userInfo = res.data.data
               }
               else {
-                alert("查询失败")
+                this.message = res.data.message
+                this.display()
               }
             })
         }
@@ -74,10 +79,20 @@
                 this.userInfo = res.data.data
               }
               else {
-                alert("查询失败")
+                this.message = res.data.message
+                this.display()
               }
             })
         }
+      },
+      displayNone() {
+        document.getElementById("alert").style.top = "-50px"
+      },
+      display() {
+        document.getElementById("alert").style.top = "10px"
+        setTimeout(function () {
+          document.getElementById("alert").style.top = "-50px"
+        },2000)
       }
     }
   }
@@ -113,5 +128,29 @@
     border: 1px #51BAA4 solid;
     border-radius: 20px;
     color: #fff;
+  }
+  #alert {
+    line-height: 30px;
+    padding-left: 80px;
+    padding-right: 80px;
+    position: fixed;
+    left: 50%;
+    margin-left: -150px;
+    top: -50px;
+    text-align: center;
+    background-color: rgb(255,255,255);
+    border-radius: 3px;
+    box-shadow: 10px 10px 5px rgba(0,0,0,0.5);
+    color: #000;
+    font-size: 15px;
+    z-index: 10002;
+    transition: all 0.5s ease-in-out;
+  }
+  #alert img {
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
   }
 </style>

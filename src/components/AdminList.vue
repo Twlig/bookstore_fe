@@ -19,7 +19,6 @@
           <table>
             <thead>
             <tr >
-              <th colspan="2" style="text-align: center ">用户名</th>
               <th>订单号</th>
               <th>书名</th>
               <th>订单状态</th>
@@ -30,7 +29,6 @@
             <tr v-for="book in item">
               <!--<td style="position: relative;padding-right: 30px"><input type="checkbox" id="cop" name="copy" >-->
                 <!--<label style="position: absolute;width: 30px;height: 30px;top: 50%;margin-top: -15px;" for="cop"></label></td>-->
-              <td colspan="2" style="text-align: center ">{{username}}</td>
               <td>{{book.order_id}}</td>
               <td>《{{book.book_name}}》</td>
               <td v-if="book.is_finsh == 0">已付款</td>
@@ -43,7 +41,6 @@
             <tr v-for="book in item">
               <!--<td style="position: relative;padding-right: 30px"><input type="checkbox" id="cop" name="copy" >-->
               <!--<label style="position: absolute;width: 30px;height: 30px;top: 50%;margin-top: -15px;" for="cop"></label></td>-->
-              <td colspan="2" style="text-align: center ">{{username}}</td>
               <td>{{book.order_id}}</td>
               <td>《{{book.book_name}}》</td>
               <td v-if="book.is_finsh == 0">已付款</td>
@@ -56,7 +53,6 @@
             <tr v-for="book in item">
               <!--<td style="position: relative;padding-right: 30px"><input type="checkbox" id="cop" name="copy" >-->
               <!--<label style="position: absolute;width: 30px;height: 30px;top: 50%;margin-top: -15px;" for="cop"></label></td>-->
-              <td colspan="2" style="text-align: center ">{{username}}</td>
               <td>{{book.order_id}}</td>
               <td>《{{book.book_name}}》</td>
               <td v-if="book.is_finsh == 0">已付款</td>
@@ -68,29 +64,12 @@
 
           </table>
         </div>
-        <!--<div class="row">-->
-          <!--<div class="3u 6u(small) 12u$(xsmall)">-->
-            <!--<ul class="actions vertical">-->
-            <!--</ul>-->
-          <!--</div>-->
-          <!--<div class="3u 6u$(small) 12u$(xsmall)">-->
-            <!--<ul class="actions vertical small">-->
-            <!--</ul>-->
-          <!--</div>-->
-          <!--<div class="3u 6u(small) 12u$(xsmall)">-->
-            <!--<ul class="actions vertical">-->
-            <!--</ul>-->
-          <!--</div>-->
-          <!--<div class="3u$ 6u$(small) 12u$(xsmall)">-->
-            <!--<ul class="actions vertical small">-->
-              <!--<li><a href="#" class="button special small fit">一键完成</a></li>-->
-            <!--</ul>-->
-          <!--</div>-->
-        <!--</div>-->
       </div>
       <hr />
     </section>
-
+    <div id="alert">{{message}}
+      <img @click="displayNone()" src="../assets/images/close.png"/>
+    </div>
   </div>
 </template>
 <script>
@@ -102,7 +81,8 @@
         bookList: [],
         bookList1: [],
         bookList2: [],
-        status: ''
+        status: '',
+        message: ""
       }
     },
     methods: {
@@ -119,6 +99,10 @@
                 alert("请求失败")
               }
             })
+            .catch(err => {
+              this.message = "请求失败"
+              this.display()
+            })
         }
         else {
           this.axios.get(this.baseUrl + "/api/searchOrders?user_name=" + this.username + "&&status=" + this.status)
@@ -132,11 +116,17 @@
                 this.bookList = []
                 this.bookList1 = []
                 this.bookList2 = []
-                alert("当前用户尚未有任何订单记录")
+                this.message = res.data.message
+                this.display()
               }
               else {
-                alert("请求失败")
+                this.message = res.data.message
+                this.display()
               }
+            })
+            .catch(err => {
+              this.message = "请求失败"
+              this.display()
             })
         }
       },
@@ -145,11 +135,27 @@
           .then(res => {
             if(res.data.status == 1) {
               this.getOrderByUser()
+              this.message = res.data.message
+              this.display()
             }
             else {
-              alert("修改失败")
+              this.message = res.data.message
+              this.display()
             }
           })
+          .catch(err => {
+            this.message = "请求失败"
+            this.display()
+          })
+      },
+      displayNone() {
+        document.getElementById("alert").style.top = "-50px"
+      },
+      display() {
+        document.getElementById("alert").style.top = "10px"
+        setTimeout(function () {
+          document.getElementById("alert").style.top = "-50px"
+        },2000)
       }
     },
     created() {
@@ -161,5 +167,29 @@
   td,
   th{
     text-align: center;
+  }
+  #alert {
+    line-height: 30px;
+    padding-left: 80px;
+    padding-right: 80px;
+    position: fixed;
+    left: 50%;
+    margin-left: -150px;
+    top: -50px;
+    text-align: center;
+    background-color: rgb(255,255,255);
+    border-radius: 3px;
+    box-shadow: 10px 10px 5px rgba(0,0,0,0.5);
+    color: #000;
+    font-size: 15px;
+    z-index: 10002;
+    transition: all 0.5s ease-in-out;
+  }
+  #alert img {
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
   }
 </style>
