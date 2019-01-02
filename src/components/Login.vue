@@ -83,7 +83,7 @@
                 _this.$router.push('/')
               }
               if(res.data.data.user_type == 1) {
-                _this.$router.push('/admin')
+                _this.$router.push('/admin?num=1')
               }
             }
             else {

@@ -85,10 +85,13 @@
         message: ""
       }
     },
+    props: {
+      userName: String
+    },
     methods: {
       getOrderByUser() {
         if(this.status == "" && this.username == "") {
-          this.axios.get(this.baseUrl + "/api/searchOrders?user_name=" + this.username + "&&status=" + this.status)
+          this.axios.get(this.baseUrl + "/api/searchOrders?user_name=" + this.username + "&status=" + this.status)
             .then(res => {
               if(res.data.status == 1) {
                 this.bookList = res.data.data[0]
@@ -158,8 +161,33 @@
         },2000)
       }
     },
-    created() {
-
+    mounted() {
+      this.username = this.userName
+      if (this.userName != '') {
+        this.axios.get(this.baseUrl + "/api/searchOrders?user_name=" + this.userName + "&status=" + this.status)
+          .then(res => {
+            if(res.data.status == 1) {
+              this.bookList = res.data.data
+              this.bookList1 = []
+              this.bookList2 = []
+            }
+            else if(res.data.status == -1) {
+              this.bookList = []
+              this.bookList1 = []
+              this.bookList2 = []
+              this.message = res.data.message
+              this.display()
+            }
+            else {
+              this.message = res.data.message
+              this.display()
+            }
+          })
+          .catch(err => {
+            this.message = "请求失败"
+            this.display()
+          })
+      }
     }
   }
 </script>

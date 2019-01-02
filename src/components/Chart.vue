@@ -163,7 +163,7 @@
           this.axios.post(this.baseUrl2 + "/api/submitOrders",data1)
             .then(res => {
               if(res.data.status == 1) {
-                _this.message = "提交成功，即将跳转到登录页面"
+                _this.message = "提交成功，即将跳转到订单页面"
                 this.display()
                 setTimeout(function () {
                   _this.$router.push('/list')

@@ -93,6 +93,9 @@
         setTimeout(function () {
           document.getElementById("alert").style.top = "-50px"
         },2000)
+      },
+      toList(user_name) {
+        this.$router.push("/admin?num=3&username=" + user_name)
       }
     }
   }

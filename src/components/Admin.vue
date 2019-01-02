@@ -14,7 +14,7 @@
     </nav>
     <admin-book class="center" v-if="num == 1"></admin-book>
     <admin-user v-if="num == 2"></admin-user>
-    <admin-list v-if="num == 3"></admin-list>
+    <admin-list v-if="num == 3" :userName="username"></admin-list>
     <footer id="footer" style="width: 100%;position: relative;bottom:0;left: 0;">
       <div class="inner">
         <ul class="copyright">
@@ -34,7 +34,8 @@
       return {
         isVisible: false,
         num: 1,
-        title: "书籍管理"
+        title: "书籍管理",
+        username: ''
       }
     },
     components: {
@@ -60,7 +61,16 @@
       }
     },
     created() {
-
+        this.num = this.$route.query.num || 1;
+        if(this.$router.query.length == 2) {
+          //this.
+        }
+    },
+    watch: {
+      '$route' (to, from) {
+        this.num = to.query.num == undefined ? 1 : to.query.num
+        this.username = to.query.username
+      }
     }
   }
 </script>

@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="landing">
     <header id="header" class="alt">
       <a @click="toMain()">首页</a>
@@ -87,13 +87,18 @@
         else {
           this.axios.post( this.baseUrl+'/api/register',data)
             .then(function (res) {
-              _this.message = res.data.message
-              _this.display()
+	if(res.data.status == '1') {
+	_this.message = res.data.message
+	_this.display()
               _this.$router.push("/login")
-            })
-            .catch(function (err) {
-              _this.message = "请求失败"
+	}
+               else if(res.data.status == '2') {
+	 _this.message = "用户id已存在"
               _this.display()
+            }else {
+	 _this.message = "登录失败"
+              _this.display()
+	}
             })
         }
       },
